@@ -1,0 +1,130 @@
+<html>
+<head>
+<title>puzzle</title>
+<style>
+    h1
+    {
+        text-align: center;
+        background-color: bisque;
+        border-radius: 5px;
+        color:cadetblue;
+        font-family: Georgia, 'Times New Roman', Times, serif;
+        font-size: 200%;
+    }
+    b
+    {
+        float:left;
+        font-size: 150%;
+        color:cadetblue;
+        font-style: oblique;
+    }
+    #foot
+    {
+        color:cadetblue;
+        background-color:bisque;
+        border-radius: 10px;
+        font-family: Georgia, 'Times New Roman', Times, serif;
+    }
+    td{
+        text-align: center;
+        font-weight: bold;
+        font-size: 150%;
+    }
+    #content
+    {
+        background-color:cornsilk;
+    }
+</style>
+</head>
+
+<body id="content"><center><fieldset>
+    <h1>8 PUZZLE</h1>
+    <b id="steps" style="float: right;">0</b><b style="float: right;"><u>Steps:</u></b>
+    <b>Time:</b><b id="time"></b>
+    <table id="mytable" border="2px" width="40%" height="30%">
+        <tr>
+            <td id="cell1" onclick="getValue(this.value)"></td>
+            <td id="cell2" onclick="getValue(this.value)"></td>
+            <td id="cell3" onclick="getValue(this.value)"></td>
+        </tr>
+        <tr>
+            <td id="cell4" onclick="getValue(this.value)"></td>
+            <td id="cell5" onclick="getValue(this.value)"></td>
+            <td id="cell6" onclick="getValue(this.value)"></td>
+        </tr>
+        <tr>
+            <td id="cell7" onclick="getValue(this.value)"></td>
+            <td id="cell8" onclick="getValue(this.value)"></td>
+            <td id="cell9" onclick="getValue(this.value)"></td>
+        </tr>
+    </table>
+    <script>
+        setInterval(setclock,1000);
+        var seconds=0;
+        function setclock()
+        {
+            seconds++;
+            var clock=document.getElementById("time");
+            clock.innerHTML=seconds;
+        }
+        var arr=[1,2,3,4,5,6,7,8,'-'];
+        for(var i=arr.length-1;i>=0;i--)
+        {
+            var element=Math.floor(Math.random()*(i+1));
+            var t=arr[element];
+            arr[element]=arr[i];
+            arr[i]=t;
+        }
+        var moves=0;
+        insertValue();
+        function insertValue()
+        {
+            var table=document.getElementById("mytable");
+            var index=0;
+            for(var j=0;j<3;j++)
+            {
+                var cell=table.rows[j].cells;
+                for(var k=0;k<3;k++)
+                {
+                    cell[k].innerHTML=arr[index];
+                    cell[k].value=arr[index];
+                    index=index+1;
+                }
+            }
+            check();
+        }
+        function getValue(x)
+        {
+            var hyphen=arr.indexOf('-');
+            var number=arr.indexOf(x);
+             if(number==hyphen-1||number==hyphen+1||number==hyphen+3||number==hyphen-3)
+            {
+                ++moves;
+                var  t=arr[hyphen];
+                arr[hyphen]=arr[number];
+                arr[number]=t;
+                insertValue();
+            }   
+            document.getElementById("steps").innerHTML=moves;
+        }
+        function check()
+        {
+            for(var i=0;i<arr.length-1;i++)
+            {
+                if(i+1!=arr[i])
+                break;
+            }
+            if(i==arr.length-1)
+            {
+                document.getElementById("content").innerHTML="You have solved the puzzle in "+moves+" steps";   
+                document.getElementById("content").style.fontSize="250%";
+                document.getElementById("content").style.position="absolute";
+                document.getElementById("content").style.left="25%";
+                document.getElementById("content").style.top="35%";
+            }
+        }
+    </script><hr>
+    <footer id="foot">&copy;Yukesh_Puzzle</footer>
+    </fieldset></center>
+</body>
+</html>
